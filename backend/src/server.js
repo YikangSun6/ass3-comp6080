@@ -17,6 +17,7 @@ import {
   assertCreatorOfJobPost,
   assertWatcherOfJobPost,
   getUser,
+  getusers,
   watchUser,
   updateProfile,
   getJobs,
@@ -25,6 +26,8 @@ import {
   commentOnJobPost,
   likeJobPost,
   deleteJobPost,
+  deleteComments,
+  addComments
 } from './service';
 
 const app = express();
@@ -124,10 +127,23 @@ app.put('/job/like', catchErrors(authed(async (req, res, authUserId) => {
 
 app.get('/user', catchErrors(authed(async (req, res, authUserId) => {
   const { userId, } = req.query;
-  await assertValidUserId(userId);
+ // await assertValidUserId(userId);
   return res.json(await getUser(userId));
 })));
 
+app.get('/getusers', catchErrors(authed(async (req, res, authUserId) => {
+ // await assertValidUserId(userId);
+  return res.json(await getusers());
+})));
+
+app.get('/delComments', catchErrors(authed(async (req, res, authUserId) => {
+  const { index,id,Id } = req.query;
+   return res.json(await deleteComments(index,id,Id));
+ })));
+ app.get('/addComments', catchErrors(authed(async (req, res, authUserId) => {
+  const { Id,userId,comment} = req.query;
+   return res.json(await addComments(Id,userId,comment));
+ })));
 app.put('/user/watch', catchErrors(authed(async (req, res, authUserId) => {
   const { email, id, turnon } = req.body;
   let userId = id;

@@ -6,6 +6,9 @@
     <title>LurkForWork</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="styles/styles.css" />
+	<link rel="stylesheet" href="data/layui.css" media="all">
+	<link rel="stylesheet" href="lib/layui-v2.6.3/css/layui.css" media="all">
+	<link rel="stylesheet" href="data/public.css" media="all">
 </head>
 <body>
     <header>
@@ -39,11 +42,272 @@
             <div class="feed-container">
             </div>
             <button id="loadMore">Load More</button>
+			<div id="myCom"></div>
+			<div id="myComId"></div>
+			<input id="commont" /> <div class="layui-btn layui-btn-normal" id="push">发布</div>
         </div>
+		<div class="layui-btn">我的信息</div>
+		<div class="layui-form layuimini-form">
+			<div class="layui-form-item">
+			    <label class="layui-form-label required">用户id</label>
+			    <div class="layui-input-block">
+			        <input disabled type="text" name="id" id="id" lay-verify="required" lay-reqtext="id" placeholder="id" value="" class="layui-input">
+			    </div>
+			</div>
+		    <div class="layui-form-item">
+		        <label class="layui-form-label required">用户名</label>
+		        <div class="layui-input-block">
+		            <input type="text" name="name" id="name" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+		        </div>
+		    </div>
+		    <div class="layui-form-item">
+		        <label class="layui-form-label required">邮箱</label>
+		        <div class="layui-input-block">
+		            <input id="email" type="email" name="email" lay-verify="required" lay-reqtext="邮箱不能为空" placeholder="请输入手机" value="" class="layui-input">
+		        </div>
+		    </div>
+		    <div class="layui-form-item">
+		        <label class="layui-form-label">jobs</label>
+		        <div class="layui-input-block">
+		            <input id="jobs" type="text" name="jobs" placeholder="请输入jobs" value="" class="layui-input">
+		        </div>
+		    </div>
+			
+			<div class="layui-form-item">
+			    <label class="layui-form-label">image</label>
+			    <div class="layui-input-block">
+			        <input id="image" type="text" name="image" placeholder="image" value="" class="layui-input">
+			    </div>
+			</div>
+		   
+		    <div class="layui-form-item">
+		        <div class="layui-input-block">
+		            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn" id="saveBtn">确认保存</button>
+		        </div>
+		    </div>
+		</div>
+		<table style="margin-top: 300px;" class="layui-hide" id="currentTableId" lay-filter="currentTableFilter">
+		</table>
     </main>
     <footer>
         <p>&copy; lurkforwork.com 2022</p>
     </footer>
     <script src="src/main.js"></script>
+
+	<script type="text/html" id="currentTableBar">
+		<a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+		<a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除job</a>
+	</script>
+	<script src="data/layui.js" charset="utf-8"></script>
+	<script src="lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+	<script>
+		// function del(index,id,Id){
+		// 	console.log("del",index,id,Id)
+		// 	$.ajax({
+		// 		url:'http://localhost:5005/delComments',
+		// 		headers: {
+		// 		  'Content-Type': 'application/json',
+		// 		  'Authorization': `Bearer ${token}`,
+		// 		},
+		// 		data:JSON.stringify({
+		// 			index,
+		// 			id,
+		// 			Id
+		// 		}),
+		// 		method:"get",
+		// 		success:function(res){
+		// 			console.log(res,"res")
+		// 			$("#id").val(userId)
+		// 			$("#email").val(res.email)
+		// 			$("#name").val(res.name)
+		// 			$("#jobs").val(res.jobs)
+		// 			$("#image").val(res.image)
+		// 		}
+		// 	})
+		// }
+		layui.use(['form', 'table','layer'], function() {
+			var $ = layui.jquery,
+				form = layui.form,
+				table = layui.table;
+			let token =localStorage.getItem('token')
+			let userId =localStorage.getItem('userId')
+			if(!userId){
+				return;
+			}
+			$.ajax({
+				url:'http://localhost:5005/user?userId='+userId,
+				headers: {
+				  'Content-Type': 'application/json',
+				  'Authorization': `Bearer ${token}`,
+				},
+				method:"get",
+				success:function(res){
+					console.log(res,"res")
+					$("#id").val(userId)
+					$("#email").val(res.email)
+					$("#name").val(res.name)
+					$("#jobs").val(res.jobs)
+					$("#image").val(res.image)
+				}
+			})
+			$('#push').click(function(){
+				$.ajax({
+					url:'http://localhost:5005/addComments?userId='+$("#id").val()+"&comment="+$("#commont").val()+"&Id="+$('#myComId').text(),
+					headers: {
+					  'Content-Type': 'application/json',
+					  'Authorization': `Bearer ${token}`,
+					},
+					// data:JSON.stringify({
+					// 	userId:$("#id").val(),
+					// 	comment:$("#commont").val(),
+					// 	Id:$('#myComId').text()
+					// }),
+					method:"get",
+					success:function(res){
+						console.log(res,"res")
+						alert("成功")
+					},
+					error:function(err){
+						alert("成功")
+					}
+				})
+			})
+			$('#saveBtn').click(function(){
+				console.log($("input[name='email']").val(),$('#email').val())
+				$.ajax({
+					url:'http://localhost:5005/user',
+					headers: {
+					  'Content-Type': 'application/json',
+					  'Authorization': `Bearer ${token}`,
+					},
+					data:JSON.stringify({
+						authUserId:$("#id").val(),
+						email:$("#email").val(),
+						name:$("#name").val(),
+						jobs:$("#jobs").val(),
+						image:$("#image").val()
+					}),
+					method:"put",
+					success:function(res){
+						console.log(res,"res")
+						alert("更新成功")
+					},
+					error:function(err){
+						alert("更新失败")
+					}
+				})
+			})
+			table.render({
+				elem: '#currentTableId',
+				url: 'http://127.0.0.1:5005/getusers',
+				method: 'get',
+				headers:{
+					 'Content-Type': 'application/json',
+					 'Authorization': `Bearer ${token}`
+				},
+				toolbar: '#toolbarDemo',
+				defaultToolbar: ['filter', 'exports', 'print', {
+					title: '提示',
+					layEvent: 'LAYTABLE_TIPS',
+					icon: 'layui-icon-tips'
+				}],
+				cols: [
+					[{
+							type: "checkbox",
+							width: 50,
+							align: 'center'
+						},
+						{
+							field: 'id',
+							//width: 80,
+							title: 'id',
+							align: 'center'
+						},
+						{
+							field: 'name',
+							//width: 80,
+							title: '姓名',
+							align: 'center'
+						},
+						{
+							field: 'email',
+							//width: 80,
+							title: '邮箱',
+							align: 'center'
+						},
+						{
+							field: 'jobs',
+							//width: 80,
+							title: 'jobs',
+							align: 'center',
+							templet: function(d){
+								if(d.jobs.length>0){
+									return JSON.stringify(d.jobs)
+								}
+								return ''
+							}
+						},
+						{
+							field: 'password',
+							//width: 80,
+							title: '密码',
+							align: 'center'
+						},
+						{
+							title: '操作',
+							minWidth: 150,
+							toolbar: '#currentTableBar',
+							align: "center"
+						}
+					]
+				],
+				limits: [10, 15, 20, 25, 50, 100],
+				limit: 15,
+				page: false,
+				skin: 'line',
+				parseData: function(res) {
+					return {
+						"code": 0,
+						"msg": "",
+				 "data": res
+					}
+				},
+				error:function(){
+					console.log("error")
+				},
+				done: function(res, curr, count){
+					//status = "Connected"
+				}
+			
+			});
+			
+			table.on('tool(currentTableFilter)', function(obj) {
+				var data = obj.data;
+				if (obj.event === 'edit') {
+					console.log("编辑")
+					layer.msg('编辑')
+					var index = layer.open({
+						title: '编辑用户',
+						type: 2,
+						shade: 0.2,
+						maxmin: true,
+						shadeClose: true,
+						area: ['100%', '100%'],
+						content: './edit.html',
+					});
+					$(window).on("resize", function() {
+						layer.full(index);
+					});
+					return false;
+				} else if (obj.event === 'delete') {
+					console.log("删除---",obj)
+					layer.confirm('真的删除行么', function(index) {
+						obj.del();
+						layer.close(index);
+					});
+				}
+			});
+		})
+	</script>
 </body>
 </html>
