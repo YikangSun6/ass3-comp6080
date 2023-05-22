@@ -1,0 +1,148 @@
+html, body{
+  height: 100%;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+header {
+  background-color: #1b51af;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+h1 {
+  margin: 0;
+}
+
+main {
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page {
+  width: 100%;
+  margin: 1em auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  background-color: white;
+  padding: 1em;
+  border-radius: 5px;
+}
+
+.page form {
+  display: flex;
+  flex-direction: column;
+}
+
+.page form input {
+  margin-bottom: 1em;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.page form button {
+  background-color: #1b51af;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.page form button:hover {
+  background-color: #1b51af;
+}
+
+.text-center {
+  text-align: center;
+}
+
+footer {
+  background-color: #1b51af;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.feed-item {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.feed-item img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.feed-item h3,
+.feed-item h4 {
+  margin: 0 0 10px;
+}
+
+.feed-item p {
+  margin: 0 0 10px;
+}
+
+.feed-item:last-child p {
+  margin-bottom: 0;
+}
+
+.toggle-likes,
+.toggle-comments {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.toggle-likes:hover,
+.toggle-comments:hover {
+    background-color: #0056b3;
+}
+
+.likes-list,
+.comments-list {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.hidden {
+  display: none;
+}
